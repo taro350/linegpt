@@ -12,8 +12,10 @@ app.use(express.urlencoded({
 }))
 
 app.get("/", (req, res) => {
+  res.sendFile("index.html")
   res.sendStatus(200)
 })
+
 
 
 app.post("/webhook", function(req, res) {
