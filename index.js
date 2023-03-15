@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 
 
 
-app.post("/webhook", function(req, res) {
+app.post("/webhook", async function(req, res) {
   res.send("HTTP POST request sent to the webhook URL!")
   // If the user sends a message to your bot, send a reply message
   if (req.body.events[0].type === "message") {
@@ -53,7 +53,7 @@ app.post("/webhook", function(req, res) {
     }
 
     // Define request
-    const request = https.request(webhookOptions, (res) => {
+    const request = await https.request(webhookOptions, (res) => {
       res.on("data", (d) => {
         process.stdout.write(d)
       })
