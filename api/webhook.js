@@ -37,7 +37,7 @@ export default async function handler(req, res) {
       // Request header
       const headers = {
         "Content-Type": "application/json",
-        "Authorization": "Bearer T7+jAlPoNy1r+ihdvqESHjarBbPzDWXsgxnlIGnoeiMJ3zBmygtXIE+r1PIdt7UJZdd8VCMQO6SBFVaerzEknHesrIAOyh8hkyE8bSDBf+8cBiJI0dSfx0Abbk439xivCgbqVhvXZV6d+PitgFCe4AdB04t89/1O/w1cDnyilFU="
+        "Authorization": LINE_ACCESS_TOKEN
       }
 
       // Options to pass into the request
@@ -65,7 +65,7 @@ export default async function handler(req, res) {
       request.write(dataString)
       request.end()
     } else {
-      res.status(400).send('INVALID_PAYLOAD : Your request does not include JSON data!')
+      res.status(400).send('400 Error [INVALID_PAYLOAD] Your request does not include JSON data!')
     }
   } 
 }
