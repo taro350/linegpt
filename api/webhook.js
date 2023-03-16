@@ -12,6 +12,7 @@ var https;
   }
 })();
 
+const TOKEN = process.env.LINE_ACCESS_TOKEN
 
 
 export default async function handler(req, res) {
@@ -37,7 +38,7 @@ export default async function handler(req, res) {
       // Request header
       const headers = {
         "Content-Type": "application/json",
-        "Authorization": LINE_ACCESS_TOKEN
+        "Authorization": "Bearer " + TOKEN
       }
 
       // Options to pass into the request
