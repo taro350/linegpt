@@ -65,7 +65,9 @@ export default async function handler(req, res) {
       request.write(dataString)
       request.end()
     } else {
-      res.status(400).send('400 Error [INVALID_PAYLOAD] Your request does not include JSON data!')
+      res.status(400).send('400 Error [INVALID_PAYLOAD]: events[0].type is not message')
     }
-  } 
+  } else {
+    res.status(400).send('400 Error [INVALID_PAYLOAD]: Your request does not include JSON data!')
+  }
 }
