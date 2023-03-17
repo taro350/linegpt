@@ -3,14 +3,13 @@ import { Configuration, OpenAIApi } from "openai";
 var https;
 
 (async() => {
-  console.log('Check if https module is available in Vercel run time node');
+  console.log("Check if 'https' node module is available in Vercel run time node");
 
   try {
     https = await (eval('import("node:https")'));
-
-    console.log('Available');
+    console.log("https' is Available");
   } catch (err) {
-    console.error('https support is disabled!');
+    console.error("'https' support is disabled");
   }
 })();
 
@@ -42,11 +41,12 @@ async function askGpt3DominosQuestion(question) {
   console.log("******************************************************************")
   console.log("Here's the answer form GPT model: " +  answer)
   console.log("******************************************************************")
-  retur
+  return answer;
+}
 
 export default async function handler(req, res) {
   if (req.body) {
-    console.log("---- You send us JSON data at /webhook endpoint");
+    console.log("---- You send us JSON data at /api/webhook endpoint");
   
     if (req.body.events[0].type === "message") {
       const m = req.body.events[0].message.text
@@ -116,6 +116,6 @@ export default async function handler(req, res) {
       res.status(400).send('400 Error [INVALID_PAYLOAD]: events[0].type is not message')
     }
   } else {
-    res.status(400).send('400 Error [INVALID_PAYLOAD]: Your request does not include JSON data!')
+    res.status(400).send('400 Error [INVALID_PAYLOAD]: This is LINE Messaging webhook endpoint! Your request does not include JSON data.')
   }
 }

@@ -30,8 +30,8 @@ async function askGpt3DominosQuestion(question) {
 }
 
 export default async function handler(req, res) {
-  console.log("You are at /api endpoint")
   if (req.body) {
+    console.log("---- You send us JSON data at /api endpoint");
     try {
       console.log(`Question : "${req.body.question}"`)
       const ans = await askGpt3DominosQuestion(req.body.question)
