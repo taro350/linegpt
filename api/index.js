@@ -34,7 +34,7 @@ export default async function handler(req, res) {
     
     try {
       const ans = askGpt3DominosQuestion(body.question)
-      return res.send(`--- Here's the answer : ${ans}`);
+      return res.send({"answer" : ans});
     } catch (e) {
       console.log(`--- Error occured! : ${e}`)
     }
