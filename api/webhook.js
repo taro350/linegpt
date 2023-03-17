@@ -122,11 +122,14 @@ export default async function handler(req, res) {
 
         // return res.send({"answer" : ans});
 
-        console.log("---- Here's the answer returned: " + answer)
+        console.log("---- Here's the answer returned: ")
+        console.log(JSON.parse(answer));
+        
+
         const msg = [
           {
             "type": "text",
-            "text": answer.choices.message.content
+            "text": JSON.parse(answer).choices[0].message.content
           }
         ]
 
