@@ -34,8 +34,7 @@ async function askGpt3DominosQuestion(question) {
   // AI:
   // `;
 
-  const prompt = `
-    Translate the following question: "${question}" into English. Write a response to the question in English, and then translate the response into Japanese`;
+  const prompt = `次の質問に役立つ知識を入れて答えて。質問：${question}`;
 
   const completion = await openai.createCompletion({
     model: "davinci-codex",
