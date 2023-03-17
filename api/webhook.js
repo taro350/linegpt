@@ -34,10 +34,7 @@ async function askGpt3DominosQuestion(question) {
   // AI:
   // `;
 
-  const prompt = `以下の会話は日本語で行う。会話者はあなたです。
-
-  ユーザ：${question}
-  AI：`;
+  const prompt = `以下の会話は日本語で行う。会話者はあなたです。以下の質問に答える。${question}`;
 
   const completion = await openai.createCompletion({
     model: "davinci-codex",
