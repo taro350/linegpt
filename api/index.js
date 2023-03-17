@@ -35,7 +35,7 @@ export default async function handler(req, res) {
 
     return res.send(`Here's the answer : ${a}`);
   } else {
-    res.status(400).send('400 Error [INVALID_PAYLOAD] Your request does not include JSON data!')
+    res.status(400).send("400 Error [INVALID_PAYLOAD] Your request does not include JSON data `question' parameter for GPT!")
   }
 
   }
