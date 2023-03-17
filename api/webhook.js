@@ -42,7 +42,7 @@ async function askGpt3DominosQuestion(question) {
   const completion = await openai.createCompletion({
     model: "davinci-codex",
     prompt: prompt,
-    max_tokens: 40,
+    max_tokens: 70,
     n: 1,
     stop: null,
     temperature: 0.75,
