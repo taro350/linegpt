@@ -7,7 +7,7 @@ var https;
 
   try {
     https = await (eval('import("node:https")'));
-    console.log("'---- https' is Available");
+    console.log("---- 'https' is Available");
   } catch (err) {
     console.error("'https' support is disabled");
   }
@@ -23,16 +23,23 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 async function askGpt3DominosQuestion(question) {
-  const prompt = `
-    The following is a conversation with an AI specifically trained on Domino Pizza information. It can provide helpful answers to any questions related to Domino's Pizza, including products, services, promotions, and more.
 
-    User: ${question}
-    AI:`;
+  // Add context-aware if your goal is to make knowledge-based 
+  // 
+  // Ex.
+  // `
+  // The following is a conversation with an AI specifically trained on Domino Pizza information. 
+  // It can provide helpful answers to any questions related to Domino's Pizza, including products, services, promotions, and more.
+  // User: ${question}
+  // AI:
+  // `;
+
+  const prompt = `Prompt: ${question}`;
 
   const completion = await openai.createCompletion({
     model: "davinci-codex",
     prompt: prompt,
-    max_tokens: 50,
+    max_tokens: 40,
     n: 1,
     stop: null,
     temperature: 0.75,
