@@ -35,10 +35,7 @@ async function askGpt3DominosQuestion(question) {
   // `;
 
   const prompt = `
-    The following is a conversation with an AI trained on general information. It can provide helpful answers to any questions related to anything.
-
-    User: ${question}
-    AI:`;
+    Translate the following question: "${question}" into English. Write a response to the question in English, and then translate the response into Japanese`;
 
   const completion = await openai.createCompletion({
     model: "davinci-codex",
