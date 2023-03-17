@@ -32,15 +32,14 @@ async function askGpt3DominosQuestion(question) {
   const completion = await openai.createCompletion({
     model: "davinci-codex",
     prompt: prompt,
-    max_tokens: 100,
+    max_tokens: 50,
     n: 1,
     stop: null,
     temperature: 0.75,
   });
   const answer = completion.data
   console.log("******************************************************************")
-  console.log("Here's the answer form GPT model: " +  answer)
-  console.log("******************************************************************")
+  console.log("Here's the answer form GPT model:")
   return answer;
 }
 
@@ -54,14 +53,14 @@ export default async function handler(req, res) {
         console.log("Question : " + m)
         const answer = await askGpt3DominosQuestion(m)
         console.log(answer)  // <pending>
-        console.log(`Promise resolved!: ${answer}`)
+        console.log("******************************************************************")
 
         // return res.send({"answer" : ans});
 
         const msg = [
           {
             "type": "text",
-            "text": answer
+            "text": answer.choices[0].text
           }
         ]
 
@@ -86,7 +85,7 @@ export default async function handler(req, res) {
           "body": dataString
         }
 
-        // Define request
+        console.log("Let's reply to users on LINE");
         const request = await https.request(webhookOptions, (res) => {
           res.on("data", (d) => {
             process.stdout.write(d)
