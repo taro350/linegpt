@@ -1,4 +1,5 @@
-const openai = require("openai");
+import openai from "openai";
+
 
 openai.apiKey = process.env.OPENAI_API_KEY
 
