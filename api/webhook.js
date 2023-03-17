@@ -3,11 +3,11 @@ import { Configuration, OpenAIApi } from "openai";
 var https;
 
 (async() => {
-  console.log("Check if 'https' node module is available in Vercel run time node");
+  console.log("---- Check if 'https' node module is available in Vercel run time node");
 
   try {
     https = await (eval('import("node:https")'));
-    console.log("https' is Available");
+    console.log("'---- https' is Available");
   } catch (err) {
     console.error("'https' support is disabled");
   }
@@ -38,8 +38,8 @@ async function askGpt3DominosQuestion(question) {
     temperature: 0.75,
   });
   const answer = completion.data
-  console.log("******************************************************************")
   console.log("Here's the answer form GPT model:")
+  console.log("**************************** Begin **************************************")
   return answer;
 }
 
@@ -50,10 +50,10 @@ export default async function handler(req, res) {
     if (req.body.events[0].type === "message") {
       const m = req.body.events[0].message.text
       try {
-        console.log("Question : " + m)
+        console.log('---- Question : ' + m )
         const answer = await askGpt3DominosQuestion(m)
         console.log(answer)  // <pending>
-        console.log("******************************************************************")
+        console.log("**************************** End **************************************")
 
         // return res.send({"answer" : ans});
 
@@ -85,7 +85,7 @@ export default async function handler(req, res) {
           "body": dataString
         }
 
-        console.log("Let's reply to users on LINE");
+        console.log("--- It's time to reply to users on LINE");
         const request = await https.request(webhookOptions, (res) => {
           res.on("data", (d) => {
             process.stdout.write(d)
