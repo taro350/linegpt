@@ -20,10 +20,9 @@ export default async function handler(req, res) {
     console.log("---- You send us JSON data at /webhook endpoint");
   
     if (req.body.events[0].type === "message") {
-      // Message data, must be stringified
-      const dataString = JSON.stringify({
-        replyToken: req.body.events[0].replyToken,
-        messages: [
+      
+      // Request to OpenAI GPT4 here
+      const msg = [
           {
             "type": "text",
             "text": "Hello, user"
@@ -33,6 +32,11 @@ export default async function handler(req, res) {
             "text": "May I help you?"
           }
         ]
+
+      // Message data, must be stringified
+      const dataString = JSON.stringify({
+        replyToken: req.body.events[0].replyToken,
+        messages: msg
       })
 
       // Request header
