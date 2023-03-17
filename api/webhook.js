@@ -1,4 +1,4 @@
-import { Configuration, OpenAIApi } from "openai";
+// import { Configuration, OpenAIApi } from "openai";
 
 var https;
 
@@ -14,40 +14,97 @@ var https;
 })();
 
 const TOKEN = process.env.LINE_ACCESS_TOKEN
+const CHAT_KEY = process.env.OPENAI_API_KEY
 
+// const configuration = new Configuration({
+//   apiKey: process.env.OPENAI_API_KEY,
+// });
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-const openai = new OpenAIApi(configuration);
+// const openai = new OpenAIApi(configuration);
 
 async function askGpt3DominosQuestion(question) {
 
-  // Add context-aware if your goal is to make knowledge-based 
-  // 
-  // Ex.
-  // `
-  // The following is a conversation with an AI specifically trained on Domino Pizza information. 
-  // It can provide helpful answers to any questions related to Domino's Pizza, including products, services, promotions, and more.
-  // User: ${question}
-  // AI:
-  // `;
+  // ********** Chat **********
+  const msg = 
+      {
+        "model": "gpt-3.5-turbo",
+        "messages": [
+            {
+              "role": "user", 
+              "content": question
+            }
+          ]
+      }
+    
+  // Message data, must be stringified
+  const dataString = JSON.stringify(msg)
 
-  const prompt = `以下の会話は日本語で行う。会話者はあなたです。以下の質問に答える。${question}`;
+  // Request header
+  const headers = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + CHAT_KEY
+  }
 
-  const completion = await openai.createCompletion({
-    model: "davinci-codex",
-    prompt: prompt,
-    max_tokens: 70,
-    n: 1,
-    stop: null,
-    temperature: 0.75,
+  // Options to pass into the request
+  const options = {
+    "hostname": "api.openai.com",
+    "path": "/v1/chat/completions",
+    "method": "POST",
+    "headers": headers,
+    "body": dataString
+  }
+
+  return new Promise((resolve, reject) => {
+    const request = https.request(options, (res) => {
+      let data = "";
+
+      res
+        .on("data", (chunk) => {
+          data += chunk
+          console.log("Write chunk into data .....")
+          // process.stdout.write(chunk)
+        })
+        .on("end", () => {
+          resolve(data);
+        });
+    })
+
+    // Handle error
+    request.on("error", (err) => {
+      console.error("---- Here's a request error: " + err)
+      reject(err);
+    })
+
+    // Send data
+    request.write(dataString)
+    request.end()
   });
-  const answer = completion.data
-  console.log("Here's the answer form GPT model:")
-  console.log("**************************** Begin **************************************")
-  return answer;
+
+
+  // ********** Completioins **********
+
+  // const compPrompt = `
+  // // The following is a conversation with an AI specifically trained on Domino Pizza information. 
+  // // It can provide helpful answers to any questions related to Domino's Pizza, including products, services, promotions, and more.
+  // // User: ${question}
+  // // AI:`;
+
+
+  // const completion = await openai.createCompletion({
+  //   model: "davinci-codex",
+  //   prompt: compPrompt,
+  //   max_tokens: 70,
+  //   n: 1,
+  //   stop: null,
+  //   temperature: 0.75,
+  // });
+
+  // const answer = completion.data
+  // return answer;
+
+  // console.log("Here's the answer form GPT model:")
+  // console.log("**************************** Begin **************************************")
+  
 }
 
 export default async function handler(req, res) {
@@ -58,16 +115,18 @@ export default async function handler(req, res) {
       const m = req.body.events[0].message.text
       try {
         console.log('---- Question : ' + m )
+        console.log("---- It's time to chat with ChatGPT");
+        console.log("**************************** Begin **************************************")
         const answer = await askGpt3DominosQuestion(m)
-        console.log(answer)  // <pending>
         console.log("**************************** End **************************************")
 
         // return res.send({"answer" : ans});
 
+        console.log("---- Here's the answer returned: " + answer)
         const msg = [
           {
             "type": "text",
-            "text": answer.choices[0].text
+            "text": answer.choices.message.content
           }
         ]
 
@@ -109,12 +168,12 @@ export default async function handler(req, res) {
         request.end()
 
       } catch (error) {
-        console.log(`--- Error occured! : *****${error}*****`)
+        console.log(`--- Error occured! : "${error}"`)
         if (error.response) {
-          console.log("--- Error message : " + error.response.status);
-          console.log("--- Error message : " + error.response.data);
+          console.log("--- Error res status : " + error.response.status);
+          console.log("--- Error res message : " + error.response.data);
         } else {
-          console.log(`--- Error message : ${error.message}`);
+          console.log(`--- Error message : "${error.message}"`);
         }
       }
       
