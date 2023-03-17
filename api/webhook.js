@@ -34,7 +34,11 @@ async function askGpt3DominosQuestion(question) {
   // AI:
   // `;
 
-  const prompt = "You're a native-level Japansese, and you're very friendly and kind. You can provide helpful answers to the following [question] in Japanese. \n[question :" + question
+  const prompt = `
+    The following is a conversation with an AI trained on general information. It can provide helpful answers to any questions related to anything.
+
+    User: ${question}
+    AI:`;
 
   const completion = await openai.createCompletion({
     model: "davinci-codex",
