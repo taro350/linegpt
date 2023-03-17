@@ -1,7 +1,11 @@
-import openai from "openai";
+import { Configuration, OpenAIApi } from "openai";
 
 
-openai.apiKey = process.env.OPENAI_API_KEY
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+const openai = new OpenAIApi(configuration);
 
 async function askGpt3DominosQuestion(question) {
   const prompt = `
@@ -10,7 +14,7 @@ async function askGpt3DominosQuestion(question) {
     User: ${question}
     AI:`;
 
-  const response = await openai.Completion.create({
+  const completion = await openai.createCompletion({
     engine: "davinci-codex",
     prompt: prompt,
     max_tokens: 100,
@@ -18,9 +22,9 @@ async function askGpt3DominosQuestion(question) {
     stop: null,
     temperature: 0.75,
   });
-
-  const answer = response.choices[0].text.trim();
+  const answer = completion.data.choices[0].text
   console.log(answer)
+
   return answer;
 }
 
@@ -36,7 +40,7 @@ export default async function handler(req, res) {
 
     return res.send(`Here's the answer : ${a}`);
   } else {
-    res.status(400).send("400 Error [INVALID_PAYLOAD] Your request does not include JSON data `question' parameter for GPT!")
+    res.status(400).send("400 Error [INVALID_PAYLOAD] Your request does not include JSON data 'question' parameter for GPT!")
   }
 
   }
