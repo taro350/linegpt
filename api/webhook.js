@@ -34,7 +34,11 @@ async function askGpt3DominosQuestion(question) {
   // AI:
   // `;
 
-  const prompt = `Prompt: ${question}`;
+  const prompt = `
+  The following is a conversation in Japanese with an AI. You're very friendly and kind. It can provide helpful answers to any questions.
+  User: ${question}
+  AI:
+  `;
 
   const completion = await openai.createCompletion({
     model: "davinci-codex",
